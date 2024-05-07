@@ -13,6 +13,7 @@ namespace StainlessPass
     public partial class newFileForm : Form
     {
         string path;
+        string password;
         public newFileForm(string path)
         {
             this.path = path;
@@ -22,7 +23,7 @@ namespace StainlessPass
         private void submitButton_Click(object sender, EventArgs e)
         {
             string name = nameTextBox.Text;
-            string password = passwordTextBox.Text;
+            password = passwordTextBox.Text;
             string confirmPassword = confirmTextBox.Text;
             if (name == "" || password == "" || confirmPassword == "")
             {
@@ -68,6 +69,10 @@ namespace StainlessPass
                 FileStream fileStream = File.Create(Path.Combine(path, name));
                 fileStream.Write(encryptedFileContent);
                 fileStream.Close();
+                passwordForm passwordform = new passwordForm("STAINLESS PASS FILE", Path.Combine(path, name), password);
+                passwordform.Show();
+                passwordform.BringToFront();
+                this.Hide();
             }
         }
 

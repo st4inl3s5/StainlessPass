@@ -53,5 +53,23 @@ namespace StainlessPass
                 }
             }
         }
+
+        public static string CreatePassword()
+        {
+            string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!'^+%&/()=?_>£#${[]}\\|<,.:;~";
+            // 25 + 25 char
+            // 10 number
+            // 28 special
+            char[] chars = characters.ToCharArray();
+            int passwordLength = 24;
+            string createdPassword = "";
+            for(int i = 0; i < passwordLength; i++)
+            {
+                Random random = new Random();
+                int randomInt = random.Next(characters.Length - 1);
+                createdPassword += chars[randomInt];
+            }
+            return createdPassword;
+        }
     }
 }

@@ -113,6 +113,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "entryForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "StainlessPass";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

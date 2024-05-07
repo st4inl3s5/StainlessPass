@@ -13,6 +13,7 @@ namespace StainlessPass
     public partial class existingFileForm : Form
     {
         string path;
+        string enteredPassword;
         public existingFileForm(string path)
         {
             this.path = path;
@@ -22,7 +23,7 @@ namespace StainlessPass
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            string enteredPassword = passwordTextBox.Text;
+            enteredPassword = passwordTextBox.Text;
             if (enteredPassword == "")
             {
                 MessageBox.Show("Please enter a password.", "StainlessPass - Open Existing StainlessPass File", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -60,6 +61,13 @@ namespace StainlessPass
                 if (confirmation != "STAINLESS PASS FILE")
                 {
                     MessageBox.Show("Entered password is wrong.", "StainlessPass - Open Existing StainlessPass File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    passwordForm passwordform = new passwordForm(decryptedFileContent, path, enteredPassword);
+                    passwordform.Show();
+                    passwordform.BringToFront();
+                    this.Hide();
                 }
             }
             catch
