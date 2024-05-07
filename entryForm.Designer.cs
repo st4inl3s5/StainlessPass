@@ -63,6 +63,7 @@
             openExistingButton.Text = "Open existing StainlessPass file";
             openExistingButton.TextAlign = ContentAlignment.MiddleRight;
             openExistingButton.UseVisualStyleBackColor = false;
+            openExistingButton.Click += openExistingButton_Click;
             // 
             // newFileButton
             // 
@@ -80,6 +81,7 @@
             newFileButton.TabIndex = 2;
             newFileButton.Text = "New StainlessPass file";
             newFileButton.UseVisualStyleBackColor = false;
+            newFileButton.Click += newFileButton_Click;
             // 
             // aboutButton
             // 
