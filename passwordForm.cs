@@ -61,6 +61,7 @@ namespace StainlessPass
         void UpdatePasswordDataGridView()
         {
             passwordDataGridView.Rows.Clear();
+            passwordHideList.Clear();
             using (FileStream fileStream = new FileStream(stapassFilePath, FileMode.Open, FileAccess.Read))
             {
                 byte[] buffer = new byte[fileStream.Length];
@@ -72,7 +73,7 @@ namespace StainlessPass
                 string decryptedFileContent = Encryption.DecryptStringFromBytes_Aes(buffer, keyByte, IVByte);
                 stapassContent = decryptedFileContent;
                 numberOfPassword = stapassContent.Split(";PASS;").Length - 1;
-                for(int i = 0; i < numberOfPassword; i++)
+                for (int i = 0; i < numberOfPassword; i++)
                 {
                     passwordHideList.Add(false);
                 }
@@ -95,12 +96,17 @@ namespace StainlessPass
 
         private void copyButton_Click(object sender, EventArgs e)
         {
-
+            if (passwordDataGridView.CurrentCell != null)
+            {
+                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
+                Clipboard.SetText(stapassContent.Split(";PASS;")[id].Split(";PASS_DELIMITER;")[2]);
+                MessageBox.Show("Copied password!", "StainlessPass - Copy Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void hideButton_Click(object sender, EventArgs e)
         {
-            if(passwordDataGridView.CurrentCell != null)
+            if (passwordDataGridView.CurrentCell != null)
             {
                 if (passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1])
                 {
@@ -120,7 +126,7 @@ namespace StainlessPass
 
         private void passwordDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex != -1)
+            if (e.RowIndex != -1)
             {
                 int id = Convert.ToInt32(passwordDataGridView.Rows[e.RowIndex].Cells[0].Value);
                 id -= 1;
@@ -132,6 +138,27 @@ namespace StainlessPass
                 {
                     hideButton.Image = Resources.show;
                 }
+            }
+        }
+
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            if(passwordDataGridView.CurrentCell != null)
+            {
+                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
+                string stringToBeRemoved = ";PASS;" + stapassContent.Split(";PASS;")[id];
+                string firstPartOfString = stapassContent.Substring(0, stapassContent.IndexOf(stringToBeRemoved));
+                string secondPartOfString = stapassContent.Substring(stapassContent.IndexOf(stringToBeRemoved) + stringToBeRemoved.Length);
+                using (FileStream fileStream = new FileStream(stapassFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] keyByte = Encoding.UTF8.GetBytes(password);
+                    char[] IVChars = password.ToCharArray();
+                    byte[] IVByte = Encoding.UTF8.GetBytes(new string(IVChars));
+                    Array.Reverse(IVChars);
+                    byte[] encryptedData = Encryption.EncryptStringToBytes_Aes(firstPartOfString + secondPartOfString, keyByte, IVByte);
+                    fileStream.Write(encryptedData);
+                }
+                    UpdatePasswordDataGridView();
             }
         }
     }

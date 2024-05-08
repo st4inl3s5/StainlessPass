@@ -102,6 +102,7 @@
             removeButton.Size = new Size(46, 38);
             removeButton.TabIndex = 1;
             removeButton.UseVisualStyleBackColor = true;
+            removeButton.Click += removeButton_Click;
             // 
             // addButton
             // 
