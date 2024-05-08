@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(passwordForm));
             buttonPanel = new Panel();
             hideButton = new Button();
@@ -73,6 +74,7 @@
             hideButton.Size = new Size(46, 38);
             hideButton.TabIndex = 3;
             hideButton.UseVisualStyleBackColor = true;
+            hideButton.Click += hideButton_Click;
             // 
             // copyButton
             // 
@@ -86,6 +88,7 @@
             copyButton.Size = new Size(46, 38);
             copyButton.TabIndex = 2;
             copyButton.UseVisualStyleBackColor = true;
+            copyButton.Click += copyButton_Click;
             // 
             // removeButton
             // 
@@ -140,11 +143,21 @@
             passwordDataGridView.Dock = DockStyle.Fill;
             passwordDataGridView.EnableHeadersVisualStyles = false;
             passwordDataGridView.Location = new Point(0, 38);
+            passwordDataGridView.MultiSelect = false;
             passwordDataGridView.Name = "passwordDataGridView";
             passwordDataGridView.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.Yellow;
+            dataGridViewCellStyle3.Font = new Font("Arial Rounded MT Bold", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            passwordDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             passwordDataGridView.RowHeadersWidth = 51;
             passwordDataGridView.Size = new Size(639, 434);
             passwordDataGridView.TabIndex = 1;
+            passwordDataGridView.CellClick += passwordDataGridView_CellClick;
             // 
             // idColumn
             // 
