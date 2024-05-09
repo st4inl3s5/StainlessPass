@@ -59,6 +59,7 @@
             nameTextBox.Name = "nameTextBox";
             nameTextBox.Size = new Size(303, 28);
             nameTextBox.TabIndex = 1;
+            nameTextBox.KeyPress += nameTextBox_KeyPress;
             // 
             // label2
             // 
@@ -82,6 +83,7 @@
             passwordTextBox.Size = new Size(303, 28);
             passwordTextBox.TabIndex = 3;
             passwordTextBox.UseSystemPasswordChar = true;
+            passwordTextBox.KeyPress += passwordTextBox_KeyPress;
             // 
             // confirmTextBox
             // 
@@ -94,6 +96,7 @@
             confirmTextBox.Size = new Size(303, 28);
             confirmTextBox.TabIndex = 5;
             confirmTextBox.UseSystemPasswordChar = true;
+            confirmTextBox.KeyPress += confirmTextBox_KeyPress;
             // 
             // label3
             // 

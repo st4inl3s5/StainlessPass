@@ -53,6 +53,7 @@
             passwordTextBox.Size = new Size(418, 28);
             passwordTextBox.TabIndex = 1;
             passwordTextBox.UseSystemPasswordChar = true;
+            passwordTextBox.KeyPress += passwordTextBox_KeyPress;
             // 
             // submitButton
             // 

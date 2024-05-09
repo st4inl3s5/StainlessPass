@@ -50,6 +50,7 @@
             nameTextBox.Name = "nameTextBox";
             nameTextBox.Size = new Size(345, 28);
             nameTextBox.TabIndex = 1;
+            nameTextBox.KeyPress += nameTextBox_KeyPress;
             // 
             // submitButton
             // 
@@ -65,7 +66,7 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
+            BackColor = Color.Gold;
             ClientSize = new Size(370, 133);
             Controls.Add(submitButton);
             Controls.Add(nameTextBox);
@@ -75,7 +76,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "addPasswordForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "StainlessPass - Add Password";
+            FormClosed += addPasswordForm_FormClosed;
             ResumeLayout(false);
             PerformLayout();
         }

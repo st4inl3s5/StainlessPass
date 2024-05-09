@@ -22,6 +22,40 @@ namespace StainlessPass
 
         private void submitButton_Click(object sender, EventArgs e)
         {
+            CreateNewFile();
+        }
+
+        private void newFileForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void nameTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                CreateNewFile();
+            }
+        }
+
+        private void passwordTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                CreateNewFile();
+            }
+        }
+
+        private void confirmTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char) Keys.Enter)
+            {
+                CreateNewFile();
+            }
+        }
+
+        void CreateNewFile()
+        {
             string name = nameTextBox.Text;
             password = passwordTextBox.Text;
             string confirmPassword = confirmTextBox.Text;
@@ -74,11 +108,6 @@ namespace StainlessPass
                 passwordform.BringToFront();
                 this.Hide();
             }
-        }
-
-        private void newFileForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.Exit();
         }
     }
 }

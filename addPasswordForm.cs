@@ -17,6 +17,7 @@ namespace StainlessPass
         string currentFileContent;
         string password;
         public static bool buttonPressed = false;
+        public static bool userExited = false;
         public addPasswordForm(string filePath, string currentFileContent, string password)
         {
             this.filePath = filePath;
@@ -27,7 +28,20 @@ namespace StainlessPass
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            using(FileStream filestream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            CreateAndAddPassword();
+        }
+
+        private void addPasswordForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!buttonPressed)
+            {
+                userExited = true;
+            }
+        }
+
+        void CreateAndAddPassword()
+        {
+            using (FileStream filestream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             {
                 string createdPassword = Encryption.CreatePassword();
                 DateTime dateTime = DateTime.Now;
@@ -44,6 +58,14 @@ namespace StainlessPass
             }
             buttonPressed = true;
             this.Close();
+        }
+
+        private void nameTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                CreateAndAddPassword();
+            }
         }
     }
 }

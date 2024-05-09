@@ -99,6 +99,7 @@
             aboutButton.TabIndex = 3;
             aboutButton.Text = "About StainlessPass";
             aboutButton.UseVisualStyleBackColor = false;
+            aboutButton.Click += aboutButton_Click;
             // 
             // entryForm
             // 

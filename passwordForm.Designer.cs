@@ -45,6 +45,7 @@
             passwordColumn = new DataGridViewTextBoxColumn();
             passwordPanel = new Panel();
             addTimer = new System.Windows.Forms.Timer(components);
+            ToolTip1 = new ToolTip(components);
             buttonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)passwordDataGridView).BeginInit();
             SuspendLayout();
@@ -59,7 +60,7 @@
             buttonPanel.Dock = DockStyle.Top;
             buttonPanel.Location = new Point(0, 0);
             buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(639, 38);
+            buttonPanel.Size = new Size(757, 38);
             buttonPanel.TabIndex = 0;
             // 
             // hideButton
@@ -73,6 +74,7 @@
             hideButton.Name = "hideButton";
             hideButton.Size = new Size(46, 38);
             hideButton.TabIndex = 3;
+            ToolTip1.SetToolTip(hideButton, "Hide/Unhide Password (CTRL+V)");
             hideButton.UseVisualStyleBackColor = true;
             hideButton.Click += hideButton_Click;
             // 
@@ -87,6 +89,7 @@
             copyButton.Name = "copyButton";
             copyButton.Size = new Size(46, 38);
             copyButton.TabIndex = 2;
+            ToolTip1.SetToolTip(copyButton, "Copy Selected Password (CTRL+C)");
             copyButton.UseVisualStyleBackColor = true;
             copyButton.Click += copyButton_Click;
             // 
@@ -101,6 +104,7 @@
             removeButton.Name = "removeButton";
             removeButton.Size = new Size(46, 38);
             removeButton.TabIndex = 1;
+            ToolTip1.SetToolTip(removeButton, "Remove Selected Password (Delete)");
             removeButton.UseVisualStyleBackColor = true;
             removeButton.Click += removeButton_Click;
             // 
@@ -115,6 +119,7 @@
             addButton.Name = "addButton";
             addButton.Size = new Size(46, 38);
             addButton.TabIndex = 0;
+            ToolTip1.SetToolTip(addButton, "Add Password (CTRL+A)");
             addButton.UseVisualStyleBackColor = true;
             addButton.Click += addButton_Click;
             // 
@@ -156,9 +161,11 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             passwordDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             passwordDataGridView.RowHeadersWidth = 51;
-            passwordDataGridView.Size = new Size(639, 434);
+            passwordDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            passwordDataGridView.Size = new Size(757, 434);
             passwordDataGridView.TabIndex = 1;
             passwordDataGridView.CellClick += passwordDataGridView_CellClick;
+            passwordDataGridView.KeyDown += passwordDataGridView_KeyDown;
             // 
             // idColumn
             // 
@@ -171,20 +178,20 @@
             // 
             // nameColumn
             // 
-            nameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             nameColumn.HeaderText = "Name";
             nameColumn.MinimumWidth = 6;
             nameColumn.Name = "nameColumn";
             nameColumn.ReadOnly = true;
-            nameColumn.Width = 98;
+            nameColumn.Width = 150;
             // 
             // creationColumn
             // 
-            creationColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            creationColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             creationColumn.HeaderText = "Creation Date";
             creationColumn.MinimumWidth = 6;
             creationColumn.Name = "creationColumn";
             creationColumn.ReadOnly = true;
+            creationColumn.Width = 162;
             // 
             // passwordColumn
             // 
@@ -199,7 +206,7 @@
             passwordPanel.Dock = DockStyle.Fill;
             passwordPanel.Location = new Point(0, 38);
             passwordPanel.Name = "passwordPanel";
-            passwordPanel.Size = new Size(639, 434);
+            passwordPanel.Size = new Size(757, 434);
             passwordPanel.TabIndex = 2;
             // 
             // addTimer
@@ -211,7 +218,7 @@
             AutoScaleDimensions = new SizeF(11F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gold;
-            ClientSize = new Size(639, 472);
+            ClientSize = new Size(757, 472);
             Controls.Add(passwordDataGridView);
             Controls.Add(passwordPanel);
             Controls.Add(buttonPanel);
@@ -224,6 +231,7 @@
             Text = "StainlessPass - Passwords of";
             FormClosed += passwordForm_FormClosed;
             Load += passwordForm_Load;
+            KeyDown += passwordForm_KeyDown;
             buttonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)passwordDataGridView).EndInit();
             ResumeLayout(false);
@@ -233,15 +241,16 @@
 
         private Panel buttonPanel;
         private DataGridView passwordDataGridView;
-        private DataGridViewTextBoxColumn idColumn;
-        private DataGridViewTextBoxColumn nameColumn;
-        private DataGridViewTextBoxColumn creationColumn;
-        private DataGridViewTextBoxColumn passwordColumn;
         private Button hideButton;
         private Button copyButton;
         private Button removeButton;
         private Button addButton;
         private Panel passwordPanel;
         private System.Windows.Forms.Timer addTimer;
+        private DataGridViewTextBoxColumn idColumn;
+        private DataGridViewTextBoxColumn nameColumn;
+        private DataGridViewTextBoxColumn creationColumn;
+        private DataGridViewTextBoxColumn passwordColumn;
+        private ToolTip ToolTip1;
     }
 }

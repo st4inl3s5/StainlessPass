@@ -23,6 +23,16 @@ namespace StainlessPass
 
         private void submitButton_Click(object sender, EventArgs e)
         {
+            ConfirmationAndEnter();
+        }
+
+        private void existingFileForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        void ConfirmationAndEnter()
+        {
             enteredPassword = passwordTextBox.Text;
             if (enteredPassword == "")
             {
@@ -76,9 +86,12 @@ namespace StainlessPass
             }
         }
 
-        private void existingFileForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void passwordTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Application.Exit();
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                ConfirmationAndEnter();
+            }
         }
     }
 }

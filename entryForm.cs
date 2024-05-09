@@ -34,7 +34,7 @@ namespace StainlessPass
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "STAPASS Dosyası | *.stapass";
-            if(dialog.ShowDialog() == DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFilePath = dialog.FileName;
                 existingFileForm fileForm = new existingFileForm(selectedFilePath);
@@ -42,6 +42,14 @@ namespace StainlessPass
                 fileForm.BringToFront();
                 this.Hide();
             }
+        }
+
+        private void aboutButton_Click(object sender, EventArgs e)
+        {
+            aboutForm about = new aboutForm();
+            about.Show();
+            about.BringToFront();
+            this.Hide();
         }
     }
 }

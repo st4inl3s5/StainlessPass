@@ -38,7 +38,7 @@ namespace StainlessPass
             Application.Exit();
         }
 
-        private void addButton_Click(object sender, EventArgs e)
+        void OpenAddPasswordForm()
         {
             buttonPanel.Enabled = false;
             addPasswordForm addForm = new addPasswordForm(stapassFilePath, stapassContent, password);
@@ -47,12 +47,75 @@ namespace StainlessPass
             addTimer.Start();
         }
 
+        void CopyPassword()
+        {
+            if (passwordDataGridView.CurrentCell != null)
+            {
+                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
+                Clipboard.SetText(stapassContent.Split(";PASS;")[id].Split(";PASS_DELIMITER;")[2]);
+                MessageBox.Show("Copied password!", "StainlessPass - Copy Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        void RemovePassword()
+        {
+            if (passwordDataGridView.CurrentCell != null)
+            {
+                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
+                string stringToBeRemoved = ";PASS;" + stapassContent.Split(";PASS;")[id];
+                string firstPartOfString = stapassContent.Substring(0, stapassContent.IndexOf(stringToBeRemoved));
+                string secondPartOfString = stapassContent.Substring(stapassContent.IndexOf(stringToBeRemoved) + stringToBeRemoved.Length);
+                using (FileStream fileStream = new FileStream(stapassFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] keyByte = Encoding.UTF8.GetBytes(password);
+                    char[] IVChars = password.ToCharArray();
+                    byte[] IVByte = Encoding.UTF8.GetBytes(new string(IVChars));
+                    Array.Reverse(IVChars);
+                    byte[] encryptedData = Encryption.EncryptStringToBytes_Aes(firstPartOfString + secondPartOfString, keyByte, IVByte);
+                    fileStream.Write(encryptedData);
+                }
+                UpdatePasswordDataGridView();
+            }
+        }
+
+        void HidePassword()
+        {
+            if (passwordDataGridView.CurrentCell != null)
+            {
+                if (passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1])
+                {
+                    passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value = new string('*', passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value.ToString().Length);
+                    passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1] = false;
+                    hideButton.Image = Resources.show;
+                }
+                else
+                {
+                    int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
+                    passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value = stapassContent.Split(";PASS;")[id].Split(";PASS_DELIMITER;")[2];
+                    passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1] = true;
+                    hideButton.Image = Resources.hide;
+                }
+            }
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            OpenAddPasswordForm();
+        }
+
         private void addTimer_Tick(object sender, EventArgs e)
         {
             if (addPasswordForm.buttonPressed == true)
             {
                 addTimer.Stop();
                 addPasswordForm.buttonPressed = false;
+                UpdatePasswordDataGridView();
+                buttonPanel.Enabled = true;
+            }
+            else if (addPasswordForm.userExited == true)
+            {
+                addTimer.Stop();
+                addPasswordForm.userExited = false;
                 UpdatePasswordDataGridView();
                 buttonPanel.Enabled = true;
             }
@@ -96,32 +159,12 @@ namespace StainlessPass
 
         private void copyButton_Click(object sender, EventArgs e)
         {
-            if (passwordDataGridView.CurrentCell != null)
-            {
-                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
-                Clipboard.SetText(stapassContent.Split(";PASS;")[id].Split(";PASS_DELIMITER;")[2]);
-                MessageBox.Show("Copied password!", "StainlessPass - Copy Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            CopyPassword();
         }
 
         private void hideButton_Click(object sender, EventArgs e)
         {
-            if (passwordDataGridView.CurrentCell != null)
-            {
-                if (passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1])
-                {
-                    passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value = new string('*', passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value.ToString().Length);
-                    passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1] = false;
-                    hideButton.Image = Resources.show;
-                }
-                else
-                {
-                    int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
-                    passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[3].Value = stapassContent.Split(";PASS;")[id].Split(";PASS_DELIMITER;")[2];
-                    passwordHideList[Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value) - 1] = true;
-                    hideButton.Image = Resources.hide;
-                }
-            }
+            HidePassword();
         }
 
         private void passwordDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -143,22 +186,34 @@ namespace StainlessPass
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-            if(passwordDataGridView.CurrentCell != null)
+            RemovePassword();
+        }
+
+        private void passwordDataGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
             {
-                int id = Convert.ToInt32(passwordDataGridView.Rows[passwordDataGridView.CurrentCell.RowIndex].Cells[0].Value);
-                string stringToBeRemoved = ";PASS;" + stapassContent.Split(";PASS;")[id];
-                string firstPartOfString = stapassContent.Substring(0, stapassContent.IndexOf(stringToBeRemoved));
-                string secondPartOfString = stapassContent.Substring(stapassContent.IndexOf(stringToBeRemoved) + stringToBeRemoved.Length);
-                using (FileStream fileStream = new FileStream(stapassFilePath, FileMode.Create, FileAccess.Write))
-                {
-                    byte[] keyByte = Encoding.UTF8.GetBytes(password);
-                    char[] IVChars = password.ToCharArray();
-                    byte[] IVByte = Encoding.UTF8.GetBytes(new string(IVChars));
-                    Array.Reverse(IVChars);
-                    byte[] encryptedData = Encryption.EncryptStringToBytes_Aes(firstPartOfString + secondPartOfString, keyByte, IVByte);
-                    fileStream.Write(encryptedData);
-                }
-                    UpdatePasswordDataGridView();
+                OpenAddPasswordForm();
+            }
+            else if (e.Control && e.KeyCode == Keys.C)
+            {
+                CopyPassword();
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                RemovePassword();
+            }
+            else if (e.Control && e.KeyCode == Keys.V)
+            {
+                HidePassword();
+            }
+        }
+
+        private void passwordForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.A)
+            {
+                OpenAddPasswordForm();
             }
         }
     }
