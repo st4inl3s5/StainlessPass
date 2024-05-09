@@ -95,7 +95,7 @@
             // 
             // githubLinkLabel
             // 
-            githubLinkLabel.Image = Properties.Resources.github1;
+            githubLinkLabel.Image = Properties.Resources.github;
             githubLinkLabel.ImageAlign = ContentAlignment.MiddleLeft;
             githubLinkLabel.LinkColor = Color.Black;
             githubLinkLabel.Location = new Point(22, 271);

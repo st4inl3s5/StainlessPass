@@ -56,10 +56,7 @@ namespace StainlessPass
 
         public static string CreatePassword()
         {
-            string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!'^+%&/()=?_>£#${[]}\\|<,.:;~";
-            // 25 + 25 char
-            // 10 number
-            // 28 special
+            string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!()?[]_`~;:@#$%^&*+=";
             char[] chars = characters.ToCharArray();
             int passwordLength = 24;
             string createdPassword = "";

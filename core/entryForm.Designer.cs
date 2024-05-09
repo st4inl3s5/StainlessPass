@@ -116,6 +116,7 @@
             Name = "entryForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "StainlessPass";
+            FormClosed += entryForm_FormClosed;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }

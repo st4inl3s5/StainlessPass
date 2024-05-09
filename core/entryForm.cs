@@ -51,5 +51,10 @@ namespace StainlessPass
             about.BringToFront();
             this.Hide();
         }
+
+        private void entryForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
